@@ -1,5 +1,24 @@
-<input.readonly></input.readonly>
-{ Const campoSenha = document.Queryselector("#campo-senha");
-   Const.letrasMaiusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-   campoSenha.valve = letrasMaiusculas
-   campo<input>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerador de Senhas</title>
+</head>
+<body>
+     <h1>Gerador de Senhas</h1>
+     <label for="campo-senha">Senha:</label>
+     <input
+         type="text"
+         id="campo-senha"
+         readonly>
+     <br><br>
+     <button onclick="diminuiTamanho()">-</button>
+     <span id="numero-senha">8</span>
+     <button onclick="aumentaTamanho()">+</button>
+     <br><br>
+     <button onclick="geraSenha()">
+        Gerar nova senha
+     </button>
+     <script src="main.js"></script>
+</body>
+</html>
