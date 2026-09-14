@@ -1,78 +1,115 @@
-const campoSenha =
-   document.querySelector("#campo-senha");
+const campoSenha = document.querySelector("#campo-senha");
+const numeroSenha = document.querySelector("#numero-senha");
+const checkboxMaiusculas = document.querySelector("#usar-maiusculas");
+const checkboxNumeros = document.querySelector("#usar-numeros");
+const checkboxSimbolos = document.querySelector("#usar-simbolos");
+const statusSenha = document.querySelector("#status-senha");
 
-const numeroSenha =
-   document.querySelector("#numero-senha");
+const letrasMaiusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const numeros = "0123456789";
+const simbolos = "#$%&*+-@?!";
 
-const letrasMaiusculas =
-   "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+let tamanhoSenha = 8;
 
-const simbolos =
-   "#@%-+?&!*$";
-
-const letrasMinusculas =
-   "abcdefghijklmnopqrstuvwxyz";
-
-const checkbox =
-   document.querySelectorAll('input[type="checkbox"]');
-
- let tamanhoSenha = 8;
-
- geraSenha();
-
- function geraSenha() {
-
- let senha = "";
-
-        if(checkbox[0].checked) {
-            senha + = letrasMaiusculas [
-                Math.floor(Math.random() * letrasMaiusculas.length)
-            ];
-        }
-        if(checkbox[1].checked) {
-            senha + = letrasMinusculas [
-                Math.floor(Math.random() * letrasMinusculas.length)
-            ];
-        }
-        if(checkbox[2].checked) {
-            senha + = simbolos [
-                Math.floor(Math.random() * simbolos.length)
-            ];
-        }
-        if(checkbox[3].checked) {
-            senha + = numeroSenha [
-                Math.floor(Math.random() * numeroSenha.length)
-            ];
-        }
-
- for (let i = 0; i < tamanhoSenha; i++) {
-
- let numeroAleatorio =
-
- Math.random() * letrasMaiusculas.length;
- numeroAleatorio =
-
- Math.floor(numeroAleatorio);
- senha +
-
- letrasMaiusculas[numeroAleatorio];
+function atualizaTamanhoNaTela() {
+  numeroSenha.textContent = tamanhoSenha;
 }
 
-campoSenha.value = senha;
+function temSequencia(senha) {
+  if (!senha || senha.length < 5) return false;
+
+  const texto = senha.toUpperCase();
+
+  for (let i = 0; i <= texto.length - 5; i++) {
+    const bloco = texto.slice(i, i + 5);
+
+    if (/^[A-Z]+$/.test(bloco) || /^[0-9]+$/.test(bloco)) {
+      const valores = bloco.split("").map((caractere) => {
+        if (/^[0-9]$/.test(caractere)) {
+          return Number(caractere);
+        }
+        return caractere.charCodeAt(0);
+      });
+
+      let sequencia = true;
+
+      for (let j = 1; j < valores.length; j++) {
+        const diferenca = Math.abs(valores[j] - valores[j - 1]);
+        if (diferenca !== 1) {
+          sequencia = false;
+          break;
+        }
+      }
+
+      if (sequencia) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
+
+function senhaAprovada(senha) {
+  if (!senha || senha.length < 8) return false;
+  if (temSequencia(senha)) return false;
+  return true;
+}
+
+function atualizaStatusNaTela() {
+  const aprovado = senhaAprovada(campoSenha.value);
+
+  statusSenha.textContent = `Senha aprovada: ${aprovado}`;
+  statusSenha.style.color = aprovado ? "green" : "red";
+}
+
+function geraSenha() {
+  let caracteres = "";
+
+  if (checkboxMaiusculas.checked) caracteres += letrasMaiusculas;
+  if (checkboxNumeros.checked) caracteres += numeros;
+  if (checkboxSimbolos.checked) caracteres += simbolos;
+
+  if (caracteres.length === 0) {
+    campoSenha.value = "";
+    atualizaStatusNaTela();
+    return false;
+  }
+
+  let senha = "";
+  let tentativas = 0;
+
+  do {
+    senha = "";
+
+    for (let i = 0; i < tamanhoSenha; i++) {
+      const indiceAleatorio = Math.floor(Math.random() * caracteres.length);
+      senha += caracteres[indiceAleatorio];
+    }
+
+    tentativas++;
+  } while (!senhaAprovada(senha) && tentativas < 200);
+
+  campoSenha.value = senha;
+  atualizaStatusNaTela();
+
+  return senhaAprovada(senha);
+}
+
+[checkboxMaiusculas, checkboxNumeros, checkboxSimbolos].forEach((checkbox) => {
+  checkbox.addEventListener("change", geraSenha);
+});
 
 function diminuiTamanho() {
- if (tamanhoSenha > 1) {
- tamanhoSenha--;
-}
-numeroSenha.textContent = tamanhoSenha;
-geraSenha();
+  if (tamanhoSenha > 1) {
+    tamanhoSenha--;
+  }
+
+  atualizaTamanhoNaTela();
+  geraSenha();
 }
 
 function aumentaTamanho() {
-if (tamanhoSenha < 20) {
-tamanhoSenha++;
-}
-numeroSenha.textContent = tamanhoSenha;
-geraSenha();
-}
+  if (tamanhoSenha < 20) {
+    tamanhoSenha++;
+  }
