@@ -1,0 +1,78 @@
+:root {
+	font-family: Arial, sans-serif;
+	color: #1f2937;
+	background: #eef2f7;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background: linear-gradient(135deg, #eef2f7, #dbeafe);
+}
+
+.container {
+	padding: 32px;
+	background: #ffffff;
+	border: 1px solid #dbe3ee;
+	border-radius: 14px;
+	box-shadow: 0 12px 30px rgba(31, 41, 55, 0.12);
+}
+
+h1 {
+	color: #173b63;
+	font-size: 32px;
+}
+
+#campo-senha {
+	color: #173b63;
+	background: #f8fafc;
+	border: 2px solid #93c5fd;
+	outline: none;
+}
+
+#campo-senha:focus {
+	border-color: #2563eb;
+	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.opcoes {
+	padding: 12px 16px;
+	background: #f8fafc;
+	border-radius: 8px;
+}
+
+.opcoes label {
+	cursor: pointer;
+}
+
+input[type="checkbox"] {
+	accent-color: #2563eb;
+}
+
+#status-senha {
+	color: #b91c1c;
+}
+
+button {
+	border: 0;
+	border-radius: 8px;
+	color: #ffffff;
+	background: #2563eb;
+	transition: background 0.2s ease, transform 0.2s ease;
+}
+
+button:hover {
+	background: #1d4ed8;
+	transform: translateY(-1px);
+}
+
+button:active {
+	transform: translateY(0);
+}
+
+.controle-tamanho button {
+	min-width: 42px;
+	font-size: 20px;
+}

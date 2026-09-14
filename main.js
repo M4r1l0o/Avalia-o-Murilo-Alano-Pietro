@@ -13,6 +13,9 @@ const simbolos =
 const letrasMinusculas =
    "abcdefghijklmnopqrstuvwxyz";
 
+const checkbox =
+   document.querySelectorAll('input[type="checkbox"]');
+
  let tamanhoSenha = 8;
 
  geraSenha();
@@ -23,22 +26,22 @@ const letrasMinusculas =
 
         if(checkbox[0].checked) {
             senha + = letrasMaiusculas [
-                match.floor(match.random() letrasMaiusculas.lenght)
+                Math.floor(Math.random() * letrasMaiusculas.length)
             ];
         }
         if(checkbox[1].checked) {
             senha + = letrasMinusculas [
-                match.floor(match.random() letrasMinusculas.lenght)
+                Math.floor(Math.random() * letrasMinusculas.length)
             ];
         }
         if(checkbox[2].checked) {
             senha + = simbolos [
-                match.floor(match.random() simbolos.lenght)
+                Math.floor(Math.random() * simbolos.length)
             ];
         }
         if(checkbox[3].checked) {
             senha + = numeroSenha [
-                match.floor(match.random() numeroSenha.lenght)
+                Math.floor(Math.random() * numeroSenha.length)
             ];
         }
 
