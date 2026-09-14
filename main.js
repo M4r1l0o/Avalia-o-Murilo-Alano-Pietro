@@ -1,18 +1,22 @@
 const campoSenha = document.querySelector("#campo-senha");
 const numeroSenha = document.querySelector("#numero-senha");
 const checkboxMaiusculas = document.querySelector("#usar-maiusculas");
+const checkboxMinusculas = document.querySelector("#usar-minusculas");
 const checkboxNumeros = document.querySelector("#usar-numeros");
 const checkboxSimbolos = document.querySelector("#usar-simbolos");
 const statusSenha = document.querySelector("#status-senha");
 
 const letrasMaiusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const letrasMinusculas = "abcdefghijklmnopqrstuvwxyz";
 const numeros = "0123456789";
 const simbolos = "#$%&*+-@?!";
 
 let tamanhoSenha = 8;
 
 function atualizaTamanhoNaTela() {
-  numeroSenha.textContent = tamanhoSenha;
+  if (numeroSenha) {
+    numeroSenha.textContent = String(tamanhoSenha);
+  }
 }
 
 function temSequencia(senha) {
@@ -57,18 +61,22 @@ function senhaAprovada(senha) {
 }
 
 function atualizaStatusNaTela() {
-  const aprovado = senhaAprovada(campoSenha.value);
+  if (!campoSenha || !statusSenha) return;
 
+  const aprovado = senhaAprovada(campoSenha.value);
   statusSenha.textContent = `Senha aprovada: ${aprovado}`;
   statusSenha.style.color = aprovado ? "green" : "red";
 }
 
 function geraSenha() {
+  if (!campoSenha || !statusSenha) return false;
+
   let caracteres = "";
 
-  if (checkboxMaiusculas.checked) caracteres += letrasMaiusculas;
-  if (checkboxNumeros.checked) caracteres += numeros;
-  if (checkboxSimbolos.checked) caracteres += simbolos;
+  if (checkboxMaiusculas && checkboxMaiusculas.checked) caracteres += letrasMaiusculas;
+  if (checkboxMinusculas && checkboxMinusculas.checked) caracteres += letrasMinusculas;
+  if (checkboxNumeros && checkboxNumeros.checked) caracteres += numeros;
+  if (checkboxSimbolos && checkboxSimbolos.checked) caracteres += simbolos;
 
   if (caracteres.length === 0) {
     campoSenha.value = "";
@@ -96,9 +104,11 @@ function geraSenha() {
   return senhaAprovada(senha);
 }
 
-[checkboxMaiusculas, checkboxNumeros, checkboxSimbolos].forEach((checkbox) => {
-  checkbox.addEventListener("change", geraSenha);
-});
+if (checkboxMaiusculas && checkboxMinusculas && checkboxNumeros && checkboxSimbolos) {
+  [checkboxMaiusculas, checkboxMinusculas, checkboxNumeros, checkboxSimbolos].forEach((checkbox) => {
+    checkbox.addEventListener("change", geraSenha);
+  });
+}
 
 function diminuiTamanho() {
   if (tamanhoSenha > 1) {
@@ -113,3 +123,10 @@ function aumentaTamanho() {
   if (tamanhoSenha < 20) {
     tamanhoSenha++;
   }
+
+  atualizaTamanhoNaTela();
+  geraSenha();
+}
+
+atualizaTamanhoNaTela();
+geraSenha();
